@@ -7,6 +7,9 @@ services:
       APP_PORT: 80
 
   node:
+    # Explicit container_name so the web container can reach it at a stable DNS
+    # name (allfeat_node_1) regardless of restarts/redeploys.
+    container_name: allfeat_node_1
     # Official Allfeat node (Substrate). ENTRYPOINT is /usr/local/bin/allfeat,
     # runs as uid 1000, data lives in the /data volume. Pinned to a current
     # build so `--chain melodie` targets the live Melodie V3 testnet.
@@ -40,6 +43,7 @@ services:
       - ${APP_DATA_DIR}/data:/data
 
   web:
+    container_name: allfeat_web_1
     # Stock nginx: serves the read-only status page and reverse-proxies /rpc to
     # the node's JSON-RPC (same origin, so it inherits app_proxy auth).
     image: nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
