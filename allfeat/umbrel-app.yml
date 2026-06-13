@@ -1,0 +1,34 @@
+manifestVersion: 1
+id: allfeat
+category: crypto
+name: Allfeat
+version: "melodie-v3"
+tagline: Run a node on the Allfeat music blockchain
+description: >-
+  Allfeat is an open-source, music-native blockchain that lets creators
+  certify, protect, and monetize their metadata without intermediaries.
+
+
+  This app runs a full Allfeat node connected to the Melodie test network. It
+  warp-syncs the chain, keeps a local copy of the state, and exposes a safe
+  JSON-RPC endpoint that other tools (or the bundled status page) can query.
+
+
+  Open the app to see the node's identity, the chain it is following, its peer
+  count, and live sync progress. The node's RPC is only reachable through your
+  authenticated Umbrel session — it is not exposed on your local network.
+developer: Allfeat
+website: https://allfeat.com
+dependencies: []
+repo: https://github.com/Allfeat/Allfeat
+support: https://github.com/Allfeat/Allfeat/issues
+port: 3032
+gallery: []
+path: ""
+deterministicPassword: false
+torOnly: false
+submitter: Andrij David
+submission: https://github.com/getumbrel/umbrel-apps/pull/0000
+releaseNotes: >-
+  Initial packaging. Runs an Allfeat node on the Melodie testnet with warp sync
+  and a read-only status dashboard.

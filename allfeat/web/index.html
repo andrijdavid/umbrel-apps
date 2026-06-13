@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Allfeat Node</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: #0f1115;
+        color: #e7e9ee;
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px;
+      }
+      .wrap { width: 100%; max-width: 640px; }
+      h1 { font-size: 22px; margin: 0 0 4px; }
+      .sub { color: #8b90a0; font-size: 14px; margin-bottom: 24px; }
+      .status { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 24px; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; background: #f0b429; }
+      .dot.ok { background: #2bd47d; }
+      .dot.err { background: #ef4444; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .card { background: #171a21; border: 1px solid #232733; border-radius: 12px; padding: 16px; }
+      .card .label { color: #8b90a0; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+      .card .value { font-size: 20px; margin-top: 6px; word-break: break-all; }
+      .full { grid-column: 1 / -1; }
+      .bar { height: 8px; background: #232733; border-radius: 999px; overflow: hidden; margin-top: 12px; }
+      .bar > span { display: block; height: 100%; width: 0; background: #2bd47d; transition: width .4s ease; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>Allfeat Node</h1>
+      <div class="sub" id="chainline">Connecting…</div>
+
+      <div class="status">
+        <span class="dot" id="dot"></span>
+        <span id="statustext">Contacting node…</span>
+      </div>
+
+      <div class="grid">
+        <div class="card full">
+          <div class="label">Sync</div>
+          <div class="value" id="syncval">—</div>
+          <div class="bar"><span id="syncbar"></span></div>
+        </div>
+        <div class="card">
+          <div class="label">Peers</div>
+          <div class="value" id="peers">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Best block</div>
+          <div class="value" id="best">—</div>
+        </div>
+        <div class="card full">
+          <div class="label">Node identity</div>
+          <div class="value"><code id="peerid">—</code></div>
+        </div>
+        <div class="card full">
+          <div class="label">Version</div>
+          <div class="value" id="version">—</div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const RPC = "rpc";
+      let id = 0;
+
+      async function call(method, params = []) {
+        const res = await fetch(RPC, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", id: ++id, method, params }),
+        });
+        const json = await res.json();
+        if (json.error) throw new Error(json.error.message || method);
+        return json.result;
+      }
+
+      const hexToInt = (h) => (typeof h === "string" && h.startsWith("0x") ? parseInt(h, 16) : Number(h));
+      const $ = (x) => document.getElementById(x);
+
+      function setStatus(state, text) {
+        $("dot").className = "dot" + (state ? " " + state : "");
+        $("statustext").textContent = text;
+      }
+
+      async function refresh() {
+        try {
+          const [chain, name, version, health, sync, peerId] = await Promise.all([
+            call("system_chain"),
+            call("system_name"),
+            call("system_version"),
+            call("system_health"),
+            call("system_syncState"),
+            call("system_localPeerId"),
+          ]);
+
+          $("chainline").textContent = name + " · " + chain;
+          $("version").textContent = version;
+          $("peerid").textContent = peerId;
+          $("peers").textContent = health.peers;
+
+          const current = hexToInt(sync.currentBlock);
+          const highest = hexToInt(sync.highestBlock) || current;
+          $("best").textContent = "#" + current.toLocaleString();
+
+          const pct = highest > 0 ? Math.min(100, (current / highest) * 100) : 0;
+          $("syncbar").style.width = pct.toFixed(2) + "%";
+
+          if (health.isSyncing) {
+            $("syncval").textContent =
+              "Syncing — " + current.toLocaleString() + " / " + highest.toLocaleString() + " (" + pct.toFixed(1) + "%)";
+            setStatus("", "Syncing the Melodie network…");
+          } else {
+            $("syncval").textContent = "In sync at #" + current.toLocaleString();
+            setStatus("ok", "Synced and online");
+          }
+        } catch (e) {
+          setStatus("err", "Node not reachable yet — it may still be starting.");
+          $("syncval").textContent = "—";
+        }
+      }
+
+      refresh();
+      setInterval(refresh, 5000);
+    </script>
+  </body>
+</html>

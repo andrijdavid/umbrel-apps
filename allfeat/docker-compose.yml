@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: allfeat_web_1
+      APP_PORT: 80
+
+  node:
+    # Official Allfeat node (Substrate). ENTRYPOINT is /usr/local/bin/allfeat,
+    # runs as uid 1000, data lives in the /data volume.
+    image: allfeatnetwork/allfeat:latest@sha256:0d21c6dd422d8ae8eb21c81e88ed866d188aefeb2f104a109932aeb7176403a1
+    user: "1000:1000"
+    restart: on-failure
+    stop_grace_period: 5m
+    command:
+      - --base-path=/data
+      - --chain=melodie
+      - --name=Umbrel
+      - --port=30333
+      - --rpc-port=9944
+      # Bind RPC on all interfaces so the web container can reach it over the
+      # app network. Methods are limited to "safe" and it is never published to
+      # the host, so it stays behind Umbrel's app_proxy auth.
+      - --rpc-external
+      - --rpc-cors=all
+      - --rpc-methods=safe
+      - --prometheus-external
+      - --prometheus-port=9615
+      - --database=paritydb
+      - --sync=warp
+    ports:
+      # P2P only. Publishing it lets the node accept inbound peers; the RPC port
+      # is deliberately NOT published.
+      - "30333:30333"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+
+  web:
+    # Stock nginx: serves the read-only status page and reverse-proxies /rpc to
+    # the node's JSON-RPC (same origin, so it inherits app_proxy auth).
+    image: nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+    restart: on-failure
+    depends_on:
+      - node
+    volumes:
+      - ${APP_DATA_DIR}/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${APP_DATA_DIR}/web:/usr/share/nginx/html:ro
