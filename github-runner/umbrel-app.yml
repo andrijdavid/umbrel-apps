@@ -2,7 +2,7 @@ manifestVersion: 1
 id: github-runner
 category: developer
 name: GitHub Runner
-version: "1.0.0"
+version: "1.1.0"
 tagline: Run a self-hosted GitHub Actions runner on your Umbrel
 description: >-
   GitHub Runner lets you attach a self-hosted GitHub Actions runner directly to
@@ -26,10 +26,10 @@ description: >-
   inside the runner or use actions that do not require it.
 releaseNotes: ""
 developer: andrijdavid
-website: https://github.com/andrijdavid/umbrel-github-runner
+website: https://github.com/andrijdavid/github-runner-web
 dependencies: []
-repo: https://github.com/andrijdavid/umbrel-github-runner
-support: https://github.com/andrijdavid/umbrel-github-runner/issues
+repo: https://github.com/andrijdavid/github-runner-web
+support: https://github.com/andrijdavid/github-runner-web/issues
 port: 9995
 gallery: []
 path: ""

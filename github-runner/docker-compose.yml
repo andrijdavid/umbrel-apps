@@ -7,7 +7,7 @@ services:
       APP_PORT: 8080
 
   runner:
-    image: andrijdavid/umbrel-github-runner:1.0.2@sha256:5b8c9ec5bd97d1d405fee7951e1889b9a5c96d0b0aba1c425bd47305799fe395
+    image: ghcr.io/andrijdavid/github-runner-web:1.1.0@sha256:ec102e9bd2522c05bf6af08934c7694da2e5cdd8254354bfe1ff883dcd874a8d
     restart: on-failure
     user: "1000:1000"
     volumes:
