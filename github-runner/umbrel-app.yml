@@ -37,5 +37,8 @@ defaultUsername: ""
 defaultPassword: ""
 deterministicPassword: false
 torOnly: false
+backupIgnore:
+  - data/logs/*
+  - data/runner/_work/*
 submitter: andrijdavid
 submission: https://github.com/andrijdavid/umbrel-apps/pull/1
