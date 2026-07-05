@@ -1,0 +1,41 @@
+manifestVersion: 1
+id: github-runner
+category: developer
+name: GitHub Runner
+version: "1.0.0"
+tagline: Run a self-hosted GitHub Actions runner on your Umbrel
+description: >-
+  GitHub Runner lets you attach a self-hosted GitHub Actions runner directly to
+  your Umbrel. Use it to run workflows on your own hardware, inside your local
+  network, with full control over the execution environment.
+
+
+  The built-in web UI guides you through linking the runner to a repository,
+  organisation, or enterprise. Enter the runner name, labels, and the short-lived
+  registration token from GitHub, and the runner registers and starts
+  automatically. While jobs run, you can watch the live runner log stream in the
+  browser.
+
+
+  The runner is persisted across Umbrel restarts and updates, so you do not need
+  to re-register each time. Labels can be customised to target specific workflows.
+
+
+  Note: this runner does not include Docker-in-Docker. Workflows that need
+  container actions or service containers will fail unless they install Docker
+  inside the runner or use actions that do not require it.
+releaseNotes: ""
+developer: andrijdavid
+website: https://github.com/andrijdavid/umbrel-github-runner
+dependencies: []
+repo: https://github.com/andrijdavid/umbrel-github-runner
+support: https://github.com/andrijdavid/umbrel-github-runner/issues
+port: 9995
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+deterministicPassword: false
+torOnly: false
+submitter: andrijdavid
+submission: https://github.com/andrijdavid/umbrel-apps/pull/1
