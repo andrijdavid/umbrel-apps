@@ -2,7 +2,7 @@ manifestVersion: 1
 id: github-runner
 category: developer
 name: GitHub Runner
-version: "1.1.0"
+version: "1.1.1"
 tagline: Run a self-hosted GitHub Actions runner on your Umbrel
 description: >-
   GitHub Runner lets you attach a self-hosted GitHub Actions runner directly to
