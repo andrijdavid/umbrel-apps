@@ -2,7 +2,7 @@ manifestVersion: 1
 id: yuvomi
 category: files
 name: Yuvomi
-version: "0.82.0"
+version: "0.96.8"
 tagline: Self-hosted family planner — calendar, tasks, shopping, meals & budget
 description: >-
   Yuvomi is a self-hosted, privacy-focused family planner that bundles everything
@@ -51,21 +51,20 @@ description: >-
   Open Yuvomi from your Umbrel dashboard and create the first account — that
   account becomes the family admin and can invite the rest of the household.
 releaseNotes: >-
-  This update refreshes the dashboard with clearer retryable load errors,
-  create shortcuts for empty Shopping and Budget widgets, keyboard/touch widget
-  reordering, safer layout reset confirmation, and improved default widget
-  ordering for new households.
+  This update adds the new Rewards module for points, reward catalogs, parent
+  approval, and auditable point balances, plus new opt-in dashboard widgets for
+  Rewards, Health, and Housekeeping.
 
 
-  Budget gets a redesigned widget, mobile layout and accessibility improvements,
-  localized statistics dates, clearer error states, and undo support when marking
-  a loan installment paid.
+  It also improves the dashboard with a tall widget size, redesigned weather
+  card, better widget ordering/error handling, and a lower-GPU animated
+  background.
 
 
-  Kitchen modules now share a cleaner visual style across Meals, Recipes, and
-  Shopping. It also fixes calendar reminder timing, improves dark-mode contrast,
-  and includes several dashboard, recipe, shopping, meal, date-format, and layout
-  polish fixes.
+  Calendar, Tasks, Contacts, Health, Notes, Documents, and mobile/desktop
+  navigation all receive usability, accessibility, layout, and translation
+  fixes, including duplicate-holiday cleanup and a Paperless-ngx DMS connection
+  fix.
 developer: Ulas Kalayci
 website: https://github.com/ulsklyc/yuvomi
 dependencies: []
